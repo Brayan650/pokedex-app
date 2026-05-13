@@ -1,26 +1,29 @@
-const entrada =  document.getElementById("entradapokemon");
+const Input =  document.getElementById("entradapokemon");
 const BotonBuscar = document.getElementById("boton_buscar");
 const BotonRandom = document.getElementById("boton_random");
+const result = document.getElementById("result");
 
 BotonBuscar.addEventListener("click",() => {
     const nombre = Input.value.toLowerCase();
-    apipokemon(nombre);
+    fetchpokemon(nombre);
 });
 
 BotonRandom.addEventListener("click",() => {
     const random = Math.floor(Math.random() * 150) + 1;
-    apipokemon(random);
+    fetchpokemon(random);
 });
 
-async function apipokemon (param) {
+async function fetchpokemon (param) {
     try { 
 
-        const dato = await fetch ('https://pokeapi.co/api/v2/pokemon/ditto/${param}');
+        const dato = await fetch (`https://pokeapi.co/api/v2/pokemon/${param}`);
         const des = await dato.json();
-        document.getElementById("resultados").innerHTML = '<h2>${des.nombre}</h2> <h2>${des.random}</h2>';
+        result.innerHTML =  `<h2>${des.name}</h2>
+                            <img src="${des.sprites.front_default}">
+                            <p>ID: ${des.id}</p>`;
 
     } catch (error) {
-        resultados.innerHTML = '<p>"Pokemon no encontrado"</p>';
+        result.innerHTML = '<p>"Pokemon no encontrado"</p>';
         console.log("error");
     }
 }
